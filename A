@@ -1,93 +1,94 @@
-#include <cstdio>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include <vector>
 
 using namespace std;
 
 class Zwierze
 {
-protected:
-    int8_t masa;
 public:
-    virtual void daj_glos() = 0; //klasa abstrakcyjna, niedostepne do swiata zewnetrznego
-    void ustaw_mase (int8_t masa)
-    {
-        this -> masa = masa; // jezeli Zwierze nie troszczy sie o swoja mase to uzyje tej metody
-    }
-
-    Zwierze() //konstruktor
-    {
-        ustaw_mase(0);
-    }
+	virtual void daj_glos() = 0;
 };
 
-
-class Krowa : public Zwierze
+class Forfiter : public Zwierze
 {
 public:
-    void daj_glos()
-    {
-        cout << "Muu!";
-    }
-    void ustaw_mase (int8_t masa)
-    {
-        if (masa<0 || masa>1000) throw -1;
-            Zwierze::ustaw_mase(masa);
-        cout << endl << masa << endl;
-    }
+	virtual void daj_glos() { cout << "Szwagier!" << endl; }
+
+	~Forfiter()
+
+	{
+	    cout<<"Zabito Forfitera"<<endl;
+	}
+
 };
+
+class Kon : public Zwierze
+{
+public:
+	virtual void daj_glos() { cout << "Ihaa!" << endl; }
+	~Kon()
+	{
+	    cout<<"Zabito Konia"<<endl;
+	}
+
+};
+
 
 class Koza : public Zwierze
 {
 public:
-    void daj_glos()
-    {
-        cout << "Beeeeee!";
-    }
-    void ustaw_mase (int8_t masa)
-    {
-        if (masa<0 || masa>1000) throw -1;
-            Zwierze::ustaw_mase(masa);
-        cout << endl << masa << endl;
-    }
-};
+	virtual void daj_glos() { cout << "Meee!" << endl; }
 
+	~Koza()
+	{
+	    cout<<"Zabito Koze"<<endl;
+	}
 
-class Zoo
-{
-protected:
-    vector <Zwierze*> v;
-
-public:
-    Zoo(){
-    v.push_back(new Krowa());
-    v.push_back(new Koza());
-}
-void glosy() {
-    for (int i=0; i<v.size(); ++i)
-        v.at(i) -> daj_glos();
-}
 };
 
 
 int main()
 {
-
-    /*Zwierze *z;
-    z = new Krowa;
-    z->daj_glos();
-    z->ustaw_mase(50);
-    //cout << z.masa;
-    delete z;
-    z = new Koza;
-    z-> daj_glos();
-    delete z;*/
-
-    Zoo zoo;
-    zoo.glosy();
+	srand(time(NULL));
 
 
+	Zwierze *z = NULL;
 
-    //cout << "\n, Hello World";
-    return 0;
+	vector<Zwierze*> v;
+
+	for(int i=0; i<20; ++i)
+	{
+		if(rand()%100 > 50)
+			v.push_back(new Forfiter());
+		else
+			v.push_back(new Kon());
+	}
+
+	for(int i=0; i<v.size(); ++i)
+	{
+	    if(rand()%100 > 50)
+		v.at(i)->daj_glos();
+		else
+		delete v[i];
+
+	}
+//	TODO: zwolnij pamiec
+
+
+/*	if(rand()%100 > 50)
+		z = new Forfiter();
+	else
+		z = new Kon();
+
+	if(z != NULL)
+	{
+		z->daj_glos();
+		delete z;
+	}*/
+
+
+//   z = new Zwierze();
+	return 0;
 }
